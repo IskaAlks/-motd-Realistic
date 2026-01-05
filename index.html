@@ -1029,6 +1029,19 @@
         p, li, span {
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         }
+        
+        /* Стиль для ссылок Gmod */
+        .gmod-link {
+            color: var(--metro-accent);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--metro-accent);
+            transition: var(--transition-fast);
+        }
+        
+        .gmod-link:hover {
+            color: var(--metro-cyan);
+            border-bottom: 1px solid var(--metro-cyan);
+        }
     </style>
 </head>
 <body>
@@ -1044,16 +1057,13 @@
                 </div>
                 <div class="status-badge">
                     <i class="fas fa-server"></i>
-                    <span>ВЕРСИЯ: <b>2025.12</b></span>
+                    <span>ВЕРСИЯ: <b>2026.01</b></span>
                 </div>
                 <div class="status-badge">
                     <i class="fas fa-train"></i>
                     <span>ПОЕЗДА: <b>15+ МОДЕЛЕЙ</b></span>
                 </div>
-                <div class="status-badge">
-                    <i class="fas fa-user-friends"></i>
-                    <span>ИГРОКИ: <b id="playerCount">24/64</b></span>
-                </div>
+                <!-- Убран счетчик игроков -->
             </div>
         </div>
         
@@ -1160,7 +1170,7 @@
                         </ul>
                     </div>
                     <div class="card-actions">
-                        <a href="https://vk.com/realisvk" target="_blank" class="action-btn">
+                        <a href="javascript:void(0)" onclick="openGmodLink('https://vk.com/realisvk')" class="action-btn">
                             <i class="fab fa-vk"></i> Подробнее
                         </a>
                     </div>
@@ -1212,7 +1222,7 @@
                         </ul>
                     </div>
                     <div class="card-actions">
-                        <a href="https://discord.gg/nugak44pm" target="_blank" class="action-btn">
+                        <a href="javascript:void(0)" onclick="openGmodLink('https://discord.gg/nugak44pm')" class="action-btn">
                             <i class="fab fa-discord"></i> Присоединиться
                         </a>
                     </div>
@@ -1377,9 +1387,9 @@
                     </div>
                     <h3>ГРУППА ВКОНТАКТЕ</h3>
                     <p>Основное сообщество сервера. Новости, обсуждения, мероприятия.</p>
-                    <a href="https://vk.com/realisvk" target="_blank" class="link-btn">
+                    <button onclick="openGmodLink('https://vk.com/realisvk')" class="link-btn">
                         <i class="fab fa-vk"></i> VK.COM
-                    </a>
+                    </button>
                 </div>
                 
                 <div class="link-card">
@@ -1388,9 +1398,9 @@
                     </div>
                     <h3>ТЕХНИЧЕСКАЯ ПОДДЕРЖКА</h3>
                     <p>Telegram чат для получения помощи и решения проблем.</p>
-                    <a href="https://t.me/realischat" target="_blank" class="link-btn">
+                    <button onclick="openGmodLink('https://t.me/realischat')" class="link-btn">
                         <i class="fab fa-telegram"></i> TELEGRAM
-                    </a>
+                    </button>
                 </div>
                 
                 <div class="link-card">
@@ -1399,9 +1409,9 @@
                     </div>
                     <h3>СООБЩЕСТВО DISCORD</h3>
                     <p>Присоединяйтесь к нашему Discord для общения и координации.</p>
-                    <a href="https://discord.gg/nugak44pm" target="_blank" class="link-btn" style="background: linear-gradient(135deg, #7289da, #5a6eab);">
+                    <button onclick="openGmodLink('https://discord.gg/nugak44pm')" class="link-btn" style="background: linear-gradient(135deg, #7289da, #5a6eab);">
                         <i class="fab fa-discord"></i> DISCORD
-                    </a>
+                    </button>
                 </div>
                 
                 <div class="link-card">
@@ -1551,9 +1561,9 @@
             </ul>
             <p>Для приобретения VIP-статуса обратитесь к администрации в Discord.</p>
             <div style="margin-top: 20px;">
-                <a href="https://discord.gg/nugak44pm" target="_blank" class="link-btn" style="width: 100%; background: linear-gradient(135deg, #FFD700, #FFA500);">
+                <button onclick="openGmodLink('https://discord.gg/nugak44pm')" class="link-btn" style="width: 100%; background: linear-gradient(135deg, #FFD700, #FFA500);">
                     <i class="fab fa-discord"></i> Получить VIP в Discord
-                </a>
+                </button>
             </div>
         </div>
     </div>
@@ -1566,9 +1576,6 @@
     <script>
         // Инициализация
         document.addEventListener('DOMContentLoaded', function() {
-            // Обновление счетчика игроков
-            updatePlayerCount();
-            
             // Показать приветственное уведомление
             setTimeout(() => {
                 showNotification('Добро пожаловать на Metrostroi Realistic Server!', 'info');
@@ -1582,21 +1589,6 @@
                 });
             }, 100);
         });
-        
-        // Обновление счетчика игроков
-        function updatePlayerCount() {
-            function updateCount() {
-                const playerCountElement = document.getElementById('playerCount');
-                // Имитация изменения количества игроков
-                const basePlayers = 24;
-                const randomChange = Math.floor(Math.random() * 11) - 5; // -5 to +5
-                const currentPlayers = Math.max(10, Math.min(64, basePlayers + randomChange));
-                playerCountElement.textContent = `${currentPlayers}/64`;
-            }
-            
-            updateCount();
-            setInterval(updateCount, 30000);
-        }
         
         // Управление вкладками
         function openTab(tabName) {
@@ -1665,6 +1657,36 @@
         document.getElementById('notification').addEventListener('click', function() {
             this.classList.remove('active');
         });
+        
+        // Функция для открытия ссылок в Gmod
+        function openGmodLink(url) {
+            // Метод 1: Пробуем использовать steam://
+            try {
+                // Для Gmod лучше использовать steam://openurl/
+                if (typeof gmod !== 'undefined') {
+                    // Если мы в Gmod, используем системные вызовы
+                    window.location.href = 'steam://openurl/' + url;
+                } else {
+                    // Для веб-браузера
+                    window.open(url, '_blank');
+                }
+                showNotification('Ссылка открывается...', 'info');
+            } catch (e) {
+                // Метод 2: Открываем в новом окне
+                try {
+                    window.open(url, '_blank');
+                    showNotification('Ссылка открывается в новом окне', 'info');
+                } catch (e2) {
+                    // Метод 3: Копируем в буфер обмена
+                    navigator.clipboard.writeText(url).then(function() {
+                        showNotification('Ссылка скопирована в буфер обмена!', 'success');
+                    }, function() {
+                        // Метод 4: Показываем ссылку
+                        showNotification('Ссылка: ' + url + ' (скопируйте вручную)', 'warning');
+                    });
+                }
+            }
+        }
         
         // Простая анимация при наведении
         const cards = document.querySelectorAll('.metro-card, .rule-item, .staff-card, .link-card, .feature-card, .stat-box');
